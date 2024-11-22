@@ -1,14 +1,15 @@
-import { Pressable } from 'react-native';
+import { Link } from 'react-router-native';
 import Text from '../Text';
 
-const AppBarTab = ({ text }) => {
+const AppBarTab = ({ text, link }) => {
 	return (
-		<Pressable>
+		<Link to={link} >
 			<Text
 				fontWeight="bold"
 				color="secondary"
 				fontSize="title">{text}</Text>
-		</Pressable>
+
+		</Link >
 
 	);
 }
