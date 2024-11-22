@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet } from 'react-native'
+import { Platform, View, Image, StyleSheet } from 'react-native'
 import Text from '../Text';
 import theme from '../../theme';
 import StatBar from './StatBar';
@@ -15,6 +15,11 @@ const styles = StyleSheet.create({
 		alignItems: 'baseline',
 		gap: 2,
 		margin: 10,
+		fontFamily: Platform.select({
+			android: 'Roboto',
+			ios: 'Arial',
+			default: 'Sans-Serif',
+		}),
 		// borderBlockColor: 'green',
 		// borderWidth: 1,
 		// borderStyle: 'solid',
@@ -40,7 +45,11 @@ const styles = StyleSheet.create({
 	},
 	chip: {
 		flexBasis: 'min-content',
-		backgroundColor: theme.colors.primary,
+		backgroundColor: Platform.select({
+			android: 'blue',
+			ios: 'red',
+			default: 'green',
+		}),
 		borderRadius: 5,
 		color: theme.colors.secondary,
 		width: 'min-content',

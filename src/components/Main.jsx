@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Route, Routes } from 'react-router';
 
 import RepositoryList from './RepositoryList';
@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexGrow: 1,
+		fontFamily: Platform.select({
+			android: 'Roboto',
+			ios: 'Arial',
+			default: 'Sans-Serif',
+		}),
 	},
 });
 
