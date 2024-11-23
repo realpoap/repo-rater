@@ -4,9 +4,10 @@ import * as yup from 'yup';
 import Text from '../Text';
 import theme from '../../theme';
 
+import useSignIn from '../../hooks/useSignIn';
 
 const validationSchema = yup.object().shape({
-	name: yup
+	username: yup
 		.string()
 		.test('len', 'Username must be greater than 5', (val) => val.length > 4)
 		.required('You must enter your username.'),
@@ -16,34 +17,32 @@ const validationSchema = yup.object().shape({
 		.required('You must enter a password.'),
 })
 
-const onSubmit = (values) => {
-	console.log('function onSubmit:', values);
-};
 
-const SignInForm = () => {
+
+const SignInForm = ({ onSubmit }) => {
+
 	const formik = useFormik({
 		initialValues: {
-			name: '',
+			username: '',
 			password: '',
 		},
 		validationSchema,
 		onSubmit,
 	});
 
-
 	return (
 		<View style={styles.form}>
 			<TextInput
 				style={[
 					styles.input,
-					(formik.errors.name && formik.touched.name) && styles.error
+					(formik.errors.username && formik.touched.username) && styles.error
 				]}
 				placeholder='Username'
-				value={formik.values.name}
-				onChangeText={formik.handleChange('name')}
+				value={formik.values.username}
+				onChangeText={formik.handleChange('username')}
 			/>
-			{formik.touched.name && formik.errors.name && (
-				<Text style={styles.error}>{formik.errors.name}</Text>
+			{formik.touched.username && formik.errors.username && (
+				<Text style={styles.error}>{formik.errors.username}</Text>
 			)}
 			<TextInput
 				style={[
@@ -67,12 +66,29 @@ const SignInForm = () => {
 	)
 };
 
-
 const SignIn = () => {
+	const [signIn, result] = useSignIn();
+
+	const onSubmit = async (values) => {
+		console.log(values);
+		const { username, password } = values;
+
+		try {
+			await signIn(username, password);
+			console.log('token', result.data.authenticate.accessToken);
+
+		} catch (error) {
+			console.log('error', error);
+
+			throw new Error(error)
+		}
+	};
+
 	return (
 		<SignInForm onSubmit={onSubmit} />
 	);
 };
+
 
 const styles = StyleSheet.create({
 	form: {

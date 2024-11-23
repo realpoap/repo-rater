@@ -14,12 +14,12 @@ const useRepositories = () => {
 		if (loading) {
 			console.log('loading...');
 		}
-		if (data && !loading) {
+		if (data) {
 			setRepositories(data.repositories)
 		}
-	}, [])
+	}, [loading])
 
-	return { repositories };
+	return { repositories, refetch: useQuery(GET_REPOSITORIES) };
 
 };
 
