@@ -5,6 +5,7 @@ import Text from '../Text';
 import theme from '../../theme';
 
 import useSignIn from '../../hooks/useSignIn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const validationSchema = yup.object().shape({
 	username: yup
@@ -75,8 +76,9 @@ const SignIn = () => {
 
 		try {
 			await signIn(username, password);
-			console.log('token', result.data.authenticate.accessToken);
-
+			if (result) {
+				AsyncStorage.setItem(result.data.authenticate.accessToken);
+			}
 		} catch (error) {
 			console.log('error', error);
 
