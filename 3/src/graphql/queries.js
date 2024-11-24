@@ -19,3 +19,11 @@ query {
 	}
 }
 `;
+
+export const CHECK_IF_USER = gql`
+query {
+  me {
+    id
+    username
+  }
+}`

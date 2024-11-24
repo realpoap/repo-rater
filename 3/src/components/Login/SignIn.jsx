@@ -18,8 +18,6 @@ const validationSchema = yup.object().shape({
 		.required('You must enter a password.'),
 })
 
-
-
 const SignInForm = ({ onSubmit }) => {
 
 	const formik = useFormik({
@@ -82,7 +80,6 @@ const SignIn = () => {
 			}
 		} catch (error) {
 			console.log('error', error);
-
 			throw new Error(error)
 		}
 	};

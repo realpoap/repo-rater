@@ -8,7 +8,6 @@ const AppBarTab = ({ text, link }) => {
 				fontWeight="bold"
 				color="secondary"
 				fontSize="title">{text}</Text>
-
 		</Link >
 
 	);
