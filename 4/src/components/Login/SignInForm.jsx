@@ -9,7 +9,7 @@ import theme from '../../theme';
 const validationSchema = yup.object().shape({
 	username: yup
 		.string()
-		.test('len', 'Username must be greater than 5', (val) => val.length > 4)
+		.test('len', 'Username must be greater than 3', (val) => val.length > 2)
 		.required('You must enter your username.'),
 	password: yup
 		.string()
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 	},
 	button: {
+		fontSize: theme.fontSizes.subheading,
 		color: theme.colors.secondary,
 		fontWeight: theme.fontWeights.bold,
 		backgroundColor: theme.colors.primary,

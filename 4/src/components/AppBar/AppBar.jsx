@@ -49,8 +49,15 @@ const AppBar = () => {
 						link="../signin"
 					/>
 				}
+				{me &&
+					<AppBarTab
+						text="Create Review"
+						link="../review"
+					/>
+				}
 				{
-					me && <Pressable onPress={handlePress}>
+					me &&
+					<Pressable onPress={handlePress}>
 						<Text
 							fontWeight="bold"
 							color="secondary"
