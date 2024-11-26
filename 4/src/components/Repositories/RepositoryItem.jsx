@@ -86,10 +86,11 @@ const styles = StyleSheet.create({
 
 
 
-const RepositoryItem = ({ name, desc, language, stars, forks, reviews, rating, avatar, url }) => {
+const RepositoryItem = ({ item }) => {
+	const { fullName, description, language, stargazersCount, forksCount, reviewCount, ratingAverage, ownerAvatarUrl, url } = item
 	const handlePress = (e) => {
 		e.preventDefault();
-		console.log(url);
+		//console.log(url);
 		Linking.openURL(url)
 
 	}
@@ -102,19 +103,19 @@ const RepositoryItem = ({ name, desc, language, stars, forks, reviews, rating, a
 					width={50}
 					resizeMethod='resize'
 					resizeMode='center'
-					src={avatar}
+					src={ownerAvatarUrl}
 				/>
 				<View style={styles.item}>
-					<Text style={styles.title}>{name}</Text>
-					<Text style={styles.desc}>{desc}</Text>
+					<Text style={styles.title}>{fullName}</Text>
+					<Text style={styles.desc}>{description}</Text>
 					<Text style={styles.chip}>{language}</Text>
 				</View>
 			</View>
 			<StatBar style={styles.containerStat}
-				stars={stars}
-				forks={forks}
-				reviews={reviews}
-				rating={rating}
+				stars={stargazersCount}
+				forks={forksCount}
+				reviews={reviewCount}
+				rating={ratingAverage}
 			/>
 			{url && <Pressable onPress={handlePress}><Text style={styles.button}>Open in Github</Text></Pressable>}
 		</View>
