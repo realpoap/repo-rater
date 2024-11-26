@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 			ios: 'Arial',
 			default: 'Sans-Serif',
 		}),
+		marginBottom: 10,
 	},
 	containerInfo: {
 		flexDirection: 'row',
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
 
 
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, toGithub }) => {
 	const { fullName, description, language, stargazersCount, forksCount, reviewCount, ratingAverage, ownerAvatarUrl, url } = item
 	const handlePress = (e) => {
 		e.preventDefault();
@@ -117,7 +118,7 @@ const RepositoryItem = ({ item }) => {
 				reviews={reviewCount}
 				rating={ratingAverage}
 			/>
-			{url && <Pressable onPress={handlePress}><Text style={styles.button}>Open in Github</Text></Pressable>}
+			{toGithub && <Pressable onPress={handlePress}><Text style={styles.button}>Open in Github</Text></Pressable>}
 		</View>
 	)
 }

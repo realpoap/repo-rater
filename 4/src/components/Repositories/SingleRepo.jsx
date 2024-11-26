@@ -27,9 +27,12 @@ const SingleRepo = () => {
 				keyExtractor={review => review.id}
 				ItemSeparatorComponent={<ItemSeparator />}
 				renderItem={({ item }) => <Reviews review={item} />}
-				ListHeaderComponent={() => <RepositoryItem
+				ListHeaderComponent={() => <><RepositoryItem
 					item={repository}
-				/>}
+					toGithub={true}
+				/>
+					<ItemSeparator />
+				</>}
 			/>
 		);
 	}
