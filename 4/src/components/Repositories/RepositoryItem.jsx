@@ -1,12 +1,27 @@
-import { Platform, View, Image, StyleSheet } from 'react-native'
+import { Platform, View, Image, StyleSheet, Linking, Pressable } from 'react-native'
 import Text from '../Text';
 import theme from '../../theme';
 import StatBar from './StatBar';
 
+
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
+	containerRepo: {
+		flexDirection: 'column',
 		boxSizing: 'border-box',
+		paddingLeft: 10,
+		paddingRight: 10,
+		fontFamily: Platform.select({
+			android: 'Roboto',
+			ios: 'Arial',
+			default: 'Sans-Serif',
+		}),
+	},
+	containerInfo: {
+		flexDirection: 'row',
+
+	},
+	containerStat: {
+		flexDirection: 'row',
 	},
 	item: {
 		flex: 1,
@@ -15,11 +30,6 @@ const styles = StyleSheet.create({
 		alignItems: 'baseline',
 		gap: 2,
 		margin: 10,
-		fontFamily: Platform.select({
-			android: 'Roboto',
-			ios: 'Arial',
-			default: 'Sans-Serif',
-		}),
 		// borderBlockColor: 'green',
 		// borderWidth: 1,
 		// borderStyle: 'solid',
@@ -28,15 +38,13 @@ const styles = StyleSheet.create({
 		width: 50,
 		height: 50,
 		borderRadius: 5,
-		margin: 10,
+		marginTop: 15,
 	},
 	title: {
 		fontWeight: theme.fontWeights.bold,
 		color: theme.colors.textPrimary,
 	},
 	desc: {
-		flex: 1,
-		width: '100%',
 		flexWrap: 'wrap',
 		color: theme.colors.textSecondary,
 		// borderBlockColor: 'purple',
@@ -59,30 +67,56 @@ const styles = StyleSheet.create({
 		paddingLeft: 8,
 		paddingRight: 8,
 		fontSize: theme.fontSizes.chip,
+		textAlignVertical: 'center',
+	},
+	button: {
+		color: theme.colors.secondary,
+		backgroundColor: theme.colors.primary,
+		textAlign: 'center',
+		marginTop: 10,
+		height: 40,
+		padding: 5,
+		width: '100%',
+		borderRadius: 10,
+		fontWeight: theme.fontWeights.bold,
+		textAlignVertical: 'center',
 	}
+
 });
 
-const RepositoryItem = ({ name, desc, language, stars, forks, reviews, rating, avatar }) => {
+
+
+const RepositoryItem = ({ name, desc, language, stars, forks, reviews, rating, avatar, url }) => {
+	const handlePress = (e) => {
+		e.preventDefault();
+		console.log(url);
+		Linking.openURL(url)
+
+	}
+
 	return (
-		<View testID="repositoryItem" style={styles.container}>
-			<Image style={styles.avatar}
-				height={50}
-				width={50}
-				resizeMethod='resize'
-				resizeMode='center'
-				src={avatar}
-			/>
-			<View style={styles.item}>
-				<Text style={styles.title}>{name}</Text>
-				<Text style={styles.desc}>{desc}</Text>
-				<Text style={styles.chip}>{language}</Text>
-				<StatBar
-					stars={stars}
-					forks={forks}
-					reviews={reviews}
-					rating={rating}
+		<View testID="repositoryItem" style={styles.containerRepo}>
+			<View style={styles.containerInfo}>
+				<Image style={styles.avatar}
+					height={50}
+					width={50}
+					resizeMethod='resize'
+					resizeMode='center'
+					src={avatar}
 				/>
+				<View style={styles.item}>
+					<Text style={styles.title}>{name}</Text>
+					<Text style={styles.desc}>{desc}</Text>
+					<Text style={styles.chip}>{language}</Text>
+				</View>
 			</View>
+			<StatBar style={styles.containerStat}
+				stars={stars}
+				forks={forks}
+				reviews={reviews}
+				rating={rating}
+			/>
+			{url && <Pressable onPress={handlePress}><Text style={styles.button}>Open in Github</Text></Pressable>}
 		</View>
 	)
 }

@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router';
 import RepositoryList from './RepositoryList';
 import AppBar from './AppBar/AppBar';
 import SignIn from './Login/SignIn';
+import SingleRepo from './Repositories/SingleRepo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -25,6 +26,8 @@ const Main = () => {
 				<Route path="/" element={<RepositoryList />}
 				/>
 				<Route path="/signin" element={<SignIn />}
+				/>
+				<Route path="/:id" element={<SingleRepo />}
 				/>
 				<Route path="*" element={<RepositoryList />}
 				/>

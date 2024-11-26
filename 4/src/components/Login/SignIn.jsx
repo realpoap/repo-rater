@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-native';
 import useSignIn from '../../hooks/useSignIn';
 import SignInForm from './SignInForm';
 
-export const SignIn = () => {
+const SignIn = () => {
 	const [signIn] = useSignIn();
 	const navigate = useNavigate();
 
@@ -30,4 +30,4 @@ export const SignIn = () => {
 
 
 
-export default { SignIn, SignInForm };
+export default SignIn;
