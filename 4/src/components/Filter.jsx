@@ -1,27 +1,22 @@
 import { Picker } from '@react-native-picker/picker';
 import theme from '../theme';
-import { TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
+import { View, StyleSheet, TextInput } from 'react-native';
+import { useContext } from 'react';
+import { FilterContext } from '../contexts/FilterContext';
 
-const Filter = ({ filter, setFilter }) => {
-	const [searchFilter, setSearchFilter] = useState('');
-	const [debouncedFilter] = useDebounce(searchFilter, 1000);
-	console.log('debounced', debouncedFilter);
-
-	useEffect(() => {
-
-	}, [debouncedFilter])
+const Filter = () => {
+	const { searchFilter, setSearchFilter, filter, setFilter } = useContext(FilterContext)
 
 	return (
-		<>
+		<View style={styles.container}>
 			<TextInput
+				style={styles.search}
 				placeholder='Search'
 				inputMode='search'
 				value={searchFilter}
 				onChangeText={setSearchFilter}
 			/>
-			<Picker style={{ backgroundColor: theme.colors.textSecondary, color: theme.colors.secondary }}
+			<Picker
 				prompt='Filter by :'
 				selectedValue={filter}
 				onValueChange={(itemValue) =>
@@ -40,8 +35,26 @@ const Filter = ({ filter, setFilter }) => {
 					"orderDirection": "ASC"
 				}} />
 			</Picker>
-		</>
+		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		backgroundColor: '#e1e4e8',
+		padding: 10,
+	},
+	search: {
+		height: 50,
+		width: '100vw',
+		borderRadius: 5,
+		color: theme.colors.textSecondary,
+		borderColor: theme.colors.light,
+		borderWidth: 2,
+		verticalAlign: 'middle',
+		paddingLeft: 10,
+		backgroundColor: theme.colors.secondary,
+	}
+})
 
 export default Filter;

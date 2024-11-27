@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 export const FilterContext = createContext()
 
@@ -8,11 +9,17 @@ export const FilterContextProvider = ({ children }) => {
 		"orderDirection": "DESC"
 	});
 
+	const [searchFilter, setSearchFilter,] = useState('')
+	const [debouncedFilter] = useDebounce(searchFilter, 500);
+
 	return (
 		<FilterContext.Provider
 			value={{
 				filter,
-				setFilter
+				setFilter,
+				searchFilter,
+				setSearchFilter,
+				debouncedFilter
 			}}
 		>
 			{children}
