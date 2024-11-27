@@ -5,9 +5,9 @@ import Constants from 'expo-constants';
 import theme from '../../theme';
 import Text from '../Text';
 import AuthStorageContext from '../../contexts/AuthStorageContext';
-import useMeToken from '../../hooks/useMeToken'
 import { useContext } from 'react';
-
+import { MeContext } from '../../contexts/MeContext';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
 	nav: {
@@ -24,16 +24,22 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-	const { me } = useMeToken();
+	const navigate = useNavigate()
 	const authStorage = useContext(AuthStorageContext);
 	const apolloClient = useApolloClient();
 
-	console.log(authStorage);
+	const { me } = useContext(MeContext);
 
 	const handlePress = async (e) => {
 		e.preventDefault();
+		console.log('signout pressed');
+
 		await authStorage.removeAccessToken();
-		apolloClient.resetStore();
+		apolloClient.clearStore().then(() => {
+			apolloClient.resetStore();
+		}
+		)
+		navigate('/')
 	}
 
 	return (
@@ -43,34 +49,36 @@ const AppBar = () => {
 					text="Repositories"
 					link="../"
 				/>
-				{
-					!me && <AppBarTab
-						text="Sign In"
-						link="../signin"
-					/>
-				}
-				{
-					!me && <AppBarTab
-						text="Sign Up"
-						link="../signup"
-					/>
+				{!me &&
+					<>
+						<AppBarTab
+							text="Sign In"
+							link="../signin"
+						/>
+						<AppBarTab
+							text="Sign Up"
+							link="../signup"
+						/>
+					</>
 				}
 				{me &&
-					<AppBarTab
-						text="Create Review"
-						link="../review"
-					/>
+					<>
+						<AppBarTab
+							text="My Reviews"
+							link="../myreviews"
+						/>
+						<AppBarTab
+							text="Create Review"
+							link="../review"
+						/>
+						<Pressable onPress={handlePress}>
+							<Text
+								fontWeight="bold"
+								color="secondary"
+								fontSize="title">Sign Out</Text>
+						</Pressable>
+					</>
 				}
-				{
-					me &&
-					<Pressable onPress={handlePress}>
-						<Text
-							fontWeight="bold"
-							color="secondary"
-							fontSize="title">Sign Out</Text>
-					</Pressable>
-				}
-
 
 			</ScrollView>
 		</View>

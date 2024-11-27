@@ -1,23 +1,33 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { CHECK_IF_USER } from "../graphql/queries";
+import { MeContext } from "../contexts/MeContext";
 
-const useMeToken = () => {
-	const [me, setMe] = useState(null);
-	const { data, loading, error } = useQuery(CHECK_IF_USER);
+const useMeToken = (include) => {
+	const { setMe } = useContext(MeContext)
+
+	const { data, error, loading } = useQuery(CHECK_IF_USER, {
+		fetchPolicy: "cache-and-network",
+		variables: { includeReviews: Boolean(include) },
+		onCompleted: (data) => { console.log('me updated !'); setMe(data.me) }
+	});
 
 	useEffect(() => {
+		if (loading) {
+			console.log('loading user...');
+		}
 		if (error) {
 			throw new Error(error)
 		}
-		if (loading) {
-			console.log('checking user...');
-		}
-		if (data) {
-			setMe(data.me);
-		}
-	}, [data])
-	return { me }
+	}, [])
+
+	return {
+		data, refetch: useQuery(CHECK_IF_USER, {
+			fetchPolicy: "cache-and-network",
+			variables: { includeReviews: Boolean(include) },
+			onCompleted: (data) => setMe(data.me)
+		})
+	}
 }
 
 export default useMeToken;

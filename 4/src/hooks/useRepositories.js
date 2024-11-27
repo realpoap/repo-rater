@@ -9,7 +9,7 @@ const useRepositories = (filter) => {
 		variables: filter,
 	})
 
-	console.log('filter is', filter);
+	// console.log('filter is', filter);
 
 	useEffect(() => {
 		if (error) {

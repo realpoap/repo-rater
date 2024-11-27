@@ -13,7 +13,7 @@ const useReview = () => {
 					review: values,
 				}
 			})
-			console.log('data in useReview', data.createReview);
+			// console.log('data in useReview', data.createReview);
 			return data.createReview
 
 		} catch (error) {

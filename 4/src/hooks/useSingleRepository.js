@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-native";
 import { useQuery } from "@apollo/client";
 import { GET_SINGLE_REPO } from "../graphql/queries";
@@ -6,7 +6,6 @@ import { GET_SINGLE_REPO } from "../graphql/queries";
 const UseSingleRepository = () => {
 	const { id } = useParams();
 
-	const [repo, setRepo] = useState();
 	const { data, error, loading } = useQuery(GET_SINGLE_REPO,
 		{ variables: { id: id } }
 	)
@@ -22,7 +21,6 @@ const UseSingleRepository = () => {
 		}
 		if (data) {
 			console.log('data', data.repository);
-			setRepo(data.repository);
 		}
 	}, [loading])
 
