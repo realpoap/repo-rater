@@ -11,13 +11,12 @@ const useSignIn = () => {
 	console.log(authStorage);
 
 
-	const signIn = async (username, password) => {
+	const signIn = async (values) => {
+		console.log('in signIn hook', values);
+
 		const { data } = await authenticate({
 			variables: {
-				credentials: {
-					username: username,
-					password: password
-				}
+				credentials: values
 			}
 		})
 		console.log('from authenticate:onCompleted :', data);

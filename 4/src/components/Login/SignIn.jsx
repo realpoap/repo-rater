@@ -8,16 +8,12 @@ const SignIn = () => {
 	const navigate = useNavigate();
 
 	const onSubmit = async (values) => {
-		console.log(values);
-		const { username, password } = values;
-
 		try {
-			const data = await signIn(username, password);
+			const data = await signIn(values);
 			if (data) {
 				navigate('/');
 			}
 		} catch (error) {
-			console.log('error', error);
 			throw new Error(error)
 		}
 	};

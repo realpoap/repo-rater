@@ -49,6 +49,12 @@ const AppBar = () => {
 						link="../signin"
 					/>
 				}
+				{
+					!me && <AppBarTab
+						text="Sign Up"
+						link="../signup"
+					/>
+				}
 				{me &&
 					<AppBarTab
 						text="Create Review"
