@@ -32,7 +32,10 @@ const Main = () => {
 			<View style={styles.container}>
 				<AppBar style={styles.nav} />
 				<Routes >
-					<Route path="/" element={<FilterContextProvider><RepositoryList /></FilterContextProvider>}
+					<Route path="/" element={
+						<FilterContextProvider>
+							<RepositoryList />
+						</FilterContextProvider>}
 					/>
 					<Route path="/signin" element={<SignIn />}
 					/>
@@ -42,7 +45,10 @@ const Main = () => {
 					/>
 					<Route path="/:id" element={<SingleRepo />}
 					/>
-					<Route path="*" element={<FilterContextProvider><RepositoryList /></FilterContextProvider>}
+					<Route path="*" element={
+						<FilterContextProvider>
+							<RepositoryList />
+						</FilterContextProvider>}
 					/>
 				</Routes>
 

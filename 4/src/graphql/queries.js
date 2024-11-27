@@ -1,20 +1,13 @@
 import { gql } from "@apollo/client";
+import { REPOSITORY_FIELDS } from "./fragments";
 
 export const GET_REPOSITORIES = gql`
-query ($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection){
+${REPOSITORY_FIELDS}
+query Repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection){
 	repositories (orderBy: $orderBy, orderDirection: $orderDirection){
 		edges {
 			node {
-				id
-				fullName
-				forksCount
-				description
-				language
-				ownerAvatarUrl
-				ratingAverage
-				reviewCount
-				stargazersCount
-				url
+				...RepositoryFields
 			}
 		}
 	}
@@ -29,19 +22,24 @@ query {
   }
 }`
 
+export const FILTER_REPO_BY = gql`
+${REPOSITORY_FIELDS}
+query Repositories($searchKeyword: String) {
+  repositories(searchKeyword: $searchKeyword) {
+    edges {
+      node {
+        ...RepositoryFields
+      }
+    }
+  }
+}
+`
+
 export const GET_SINGLE_REPO = gql`
-query ($id: ID!){
+${REPOSITORY_FIELDS}
+query Repository($id: ID!){
 	repository(id: $id) {
-				id
-				fullName
-				forksCount
-				description
-				language
-				ownerAvatarUrl
-				ratingAverage
-				reviewCount
-				stargazersCount
-				url
+				...RepositoryFields
 				reviews {
 					edges {
 						node {
