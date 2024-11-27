@@ -34,6 +34,13 @@ query getCurrentUser($includeReviews: Boolean! = false){
   }
 }`
 
+export const GET_REPO_URL = gql`
+query Repository($repositoryId: ID!) {
+  repository(id: $repositoryId) {
+    url  
+  }
+}`
+
 export const GET_SINGLE_REPO = gql`
 ${REVIEW_FIELDS}
 ${REPOSITORY_FIELDS}

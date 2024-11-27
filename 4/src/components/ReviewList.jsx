@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-native";
 
 const ReviewList = () => {
 	const navigate = useNavigate();
-	const { me } = useContext(MeContext);
+	const { me, refetch } = useContext(MeContext);
 	useMeToken(true);
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const ReviewList = () => {
 			data={reviews}
 			keyExtractor={review => review.id}
 			ItemSeparatorComponent={<ItemSeparator />}
-			renderItem={({ item }) => <Reviews review={item} />}
+			renderItem={({ item }) => <Reviews review={item} refetch={refetch} username={me.username} />}
 		/>
 	);
 

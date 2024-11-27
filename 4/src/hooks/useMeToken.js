@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
-import { useQuery } from "@apollo/client";
 import { CHECK_IF_USER } from "../graphql/queries";
 import { MeContext } from "../contexts/MeContext";
+import { useQuery } from "@apollo/client";
 
 const useMeToken = (include) => {
 	const { setMe } = useContext(MeContext)
 
-	const { data, error, loading } = useQuery(CHECK_IF_USER, {
+	const { data, error, loading, refetch } = useQuery(CHECK_IF_USER, {
 		fetchPolicy: "cache-and-network",
 		variables: { includeReviews: Boolean(include) },
 		onCompleted: (data) => { console.log('me updated !'); setMe(data.me) }
@@ -22,11 +22,7 @@ const useMeToken = (include) => {
 	}, [])
 
 	return {
-		data, refetch: useQuery(CHECK_IF_USER, {
-			fetchPolicy: "cache-and-network",
-			variables: { includeReviews: Boolean(include) },
-			onCompleted: (data) => setMe(data.me)
-		})
+		data, refetch
 	}
 }
 
