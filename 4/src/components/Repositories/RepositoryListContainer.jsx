@@ -32,6 +32,8 @@ export class RepositoryListContainer extends React.Component {
 						/>
 					</Link>
 				}
+				onEndReached={this.props.onEndReach}
+				onEndReachedThreshold={0.2}
 			/>
 
 		);
