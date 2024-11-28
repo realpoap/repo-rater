@@ -1,39 +1,38 @@
-import { View, StyleSheet, Pressable, Linking, Alert } from "react-native";
+import { View, StyleSheet, Pressable, Linking } from "react-native";
 import Text from "../Text";
 import theme from "../../theme";
-import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_REVIEW } from "../../graphql/mutations";
+import { useLazyQuery } from "@apollo/client";
 import { GET_REPO_URL } from '../../graphql/queries';
+import { useEffect } from "react";
 
-const Reviews = ({ review, refetch, username }) => {
+const Reviews = ({ review, isOwner, handleDelete }) => {
 	const { createdAt, rating, text, user, id } = review;
-	const [mutate] = useMutation(DELETE_REVIEW, {
-		onCompleted: () => console.log('deleted !'),
-	})
 	const repoId = `${id.split('.')[1]}.${id.split('.')[2]}`
-	console.log(repoId);
 
-	const { data } = useQuery(GET_REPO_URL, {
-		variables: { repositoryId: repoId }
+	const [getUrl, { data }] = useLazyQuery(GET_REPO_URL, {
+		fetchPolicy: 'cache-first',
+		variables: { repositoryId: repoId },
+		onCompleted: (data) => {
+			console.log('got url !', data.repository);
+		}
 	});
-	const url = data.repository.url;
 
-	const handlePress = () => {
-		Alert.alert('Delete review', 'Are you sure you want to delete this review ?', [
-			{
-				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed'),
-				style: 'cancel',
-			},
-			{
-				text: 'OK', onPress: async () => {
-					console.log('OK Pressed');
-					await mutate({ variables: { deleteReviewId: id } });
-					refetch();
-				}
-			},
-		]);
+	useEffect(() => {
+		getUrl()
+	}, [])
 
+	const handleUrlRedirect = async () => {
+		console.log('View repo pressed !');
+
+		await getUrl()
+		const url = data ? data.repository.url : '';
+		if (url == '') {
+			console.log('url is empty');
+		} else {
+			console.log(url);
+
+			Linking.openURL(url)
+		}
 	}
 
 	return (
@@ -47,11 +46,11 @@ const Reviews = ({ review, refetch, username }) => {
 					<Text style={styles.text}>{text}</Text>
 				</View>
 			</View>
-			{(user.username === username) &&
+			{isOwner &&
 				<View style={styles.row}>
-					<Pressable onPress={() => Linking.openURL(url)}><Text style={styles.button}>View repository</Text></Pressable>
+					<Pressable onPress={handleUrlRedirect}><Text style={styles.button}>View repository</Text></Pressable>
 
-					<Pressable onPress={handlePress}><Text style={[styles.button, { backgroundColor: '#d73a4a' }]}>Delete review</Text></Pressable>
+					<Pressable onPress={() => handleDelete(id)}><Text style={[styles.button, { backgroundColor: '#d73a4a' }]}>Delete review</Text></Pressable>
 				</View>}
 		</View >
 	);
