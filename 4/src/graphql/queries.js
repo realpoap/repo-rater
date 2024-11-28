@@ -20,6 +20,7 @@ $after: String){
 			node {
 				...RepositoryFields
 			}
+			cursor
 		}
 		pageInfo {
       endCursor

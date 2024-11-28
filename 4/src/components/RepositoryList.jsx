@@ -12,7 +12,7 @@ const RepositoryList = () => {
 	const variables = {
 		variables: {
 			...filter,
-			first: 5,
+			first: 10,
 			searchKeyword: debouncedFilter
 		}
 	}
