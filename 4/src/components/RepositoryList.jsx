@@ -10,13 +10,26 @@ const RepositoryList = () => {
 
 	const variables = {
 		...filter,
+		first: 4,
 		searchKeyword: debouncedFilter,
 	};
-	console.log('variables are', variables);
 
-	const { repositories } = useRepositories(variables);
+	const { repositories, fetchMore } = useRepositories(variables);
+	if (!repositories) {
+		return <p>Loading...</p>;
+	}
 
-	return <RepositoryListContainer repositories={repositories} />;
+	const onEndReach = () => {
+		console.log('You have reached the end of the list');
+		fetchMore();
+	};
+
+	return (
+		<RepositoryListContainer
+			repositories={repositories}
+			onEndReach={onEndReach}
+		/>
+	);
 };
 
 export default RepositoryList;
