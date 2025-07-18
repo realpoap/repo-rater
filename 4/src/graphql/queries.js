@@ -50,10 +50,10 @@ query Repository($repositoryId: ID!) {
 export const GET_SINGLE_REPO = gql`
 ${REVIEW_FIELDS}
 ${REPOSITORY_FIELDS}
-query Repository($id: ID!){
+query Repository($id: ID!, $first: Int, $after: String) {
 	repository(id: $id) {
 				...RepositoryFields
-				reviews {
+				reviews (first: $first, after: $after){
 					edges {
 						node {
 							...ReviewFields
@@ -62,7 +62,13 @@ query Repository($id: ID!){
 								username
 							}							
 						}
+						cursor
 					}
+					pageInfo {
+      			endCursor
+     			 	startCursor
+      			hasNextPage
+    			}
 				}
 		
 	}

@@ -1,33 +1,32 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-native";
 import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-native";
 import { GET_SINGLE_REPO } from "../graphql/queries";
 
 const UseSingleRepository = () => {
 	const { id } = useParams();
 
-	const { data, error, loading } = useQuery(GET_SINGLE_REPO,
-		{ variables: { id: id } }
+	const variables = { id, first: 3 };
+
+	const { data, loading, fetchMore, result } = useQuery(GET_SINGLE_REPO,
+		{
+			variables,
+			fetchPolicy: 'cache-and-network'
+		}
 	)
 
-	useEffect(() => {
-		console.log('id in hook', id)
-
-		if (error) {
-			throw new Error(error);
-		}
-		if (loading) {
-			console.log('loading repo...');
-		}
-		if (data) {
-			console.log('data', data.repository);
-		}
-	}, [loading])
+	const handleFetchMore = () => {
+		const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
+		if (!canFetchMore) return;
+		fetchMore({
+			variables: {
+				after: data.repository.reviews.pageInfo.endCursor,
+				...variables,
+			}
+		})
+	}
 
 	return {
-		data, refetch: useQuery(GET_SINGLE_REPO,
-			{ variables: { id: id } }
-		)
+		repository: data?.repository, fetchMore: handleFetchMore, loading, ...result,
 	}
 }
 

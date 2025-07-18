@@ -1,43 +1,37 @@
-import { View, StyleSheet, Pressable, Linking } from "react-native";
-import Text from "../Text";
-import theme from "../../theme";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from '@apollo/client';
+import { useEffect } from 'react';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { GET_REPO_URL } from '../../graphql/queries';
-import { useEffect } from "react";
+import theme from '../../theme';
+import Text from '../Text';
 
 const Reviews = ({ review, isOwner, handleDelete }) => {
 	const { createdAt, rating, text, user, id } = review;
-	const repoId = `${id.split('.')[1]}.${id.split('.')[2]}`
+	const repoId = `${id.split('.')[1]}.${id.split('.')[2]}`;
 
 	const [getUrl, { data }] = useLazyQuery(GET_REPO_URL, {
 		fetchPolicy: 'cache-first',
 		variables: { repositoryId: repoId },
 		onCompleted: (data) => {
-			console.log('got url !', data.repository);
-		}
+			//console.log('got url !', data.repository);
+		},
 	});
 
 	useEffect(() => {
-		getUrl()
-	}, [])
+		getUrl();
+	}, []);
 
 	const handleUrlRedirect = async () => {
-		console.log('View repo pressed !');
-
-		await getUrl()
+		await getUrl();
 		const url = data ? data.repository.url : '';
 		if (url == '') {
-			console.log('url is empty');
 		} else {
-			console.log(url);
-
-			Linking.openURL(url)
+			Linking.openURL(url);
 		}
-	}
+	};
 
 	return (
 		<View>
-
 			<View style={styles.row}>
 				<Text style={styles.rating}>{rating}</Text>
 				<View style={styles.data}>
@@ -46,18 +40,24 @@ const Reviews = ({ review, isOwner, handleDelete }) => {
 					<Text style={styles.text}>{text}</Text>
 				</View>
 			</View>
-			{isOwner &&
+			{isOwner && (
 				<View style={styles.row}>
-					<Pressable onPress={handleUrlRedirect}><Text style={styles.button}>View repository</Text></Pressable>
+					<Pressable onPress={handleUrlRedirect}>
+						<Text style={styles.button}>View repository</Text>
+					</Pressable>
 
-					<Pressable onPress={() => handleDelete(id)}><Text style={[styles.button, { backgroundColor: '#d73a4a' }]}>Delete review</Text></Pressable>
-				</View>}
-		</View >
+					<Pressable onPress={() => handleDelete(id)}>
+						<Text style={[styles.button, { backgroundColor: '#d73a4a' }]}>
+							Delete review
+						</Text>
+					</Pressable>
+				</View>
+			)}
+		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
-
 	row: {
 		flex: 1,
 		flexDirection: 'row',
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		verticalAlign: 'middle',
 	},
-
-})
+});
 
 export default Reviews;
