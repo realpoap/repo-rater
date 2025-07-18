@@ -1,11 +1,20 @@
+import { useContext, useState } from 'react';
+
 import { Picker } from '@react-native-picker/picker';
-import theme from '../theme';
-import { View, StyleSheet, TextInput } from 'react-native';
-import { useContext } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { FilterContext } from '../contexts/FilterContext';
+import theme from '../theme';
+
+const filterOptions = {
+	latest: { orderBy: 'CREATED_AT', orderDirection: 'DESC' },
+	highest: { orderBy: 'RATING_AVERAGE', orderDirection: 'DESC' },
+	lowest: { orderBy: 'RATING_AVERAGE', orderDirection: 'ASC' },
+};
 
 const Filter = () => {
-	const { searchFilter, setSearchFilter, filter, setFilter } = useContext(FilterContext)
+	const { searchFilter, setSearchFilter, filter, setFilter } =
+		useContext(FilterContext);
+	const [filterKey, setFilterKey] = useState('latest');
 
 	return (
 		<View style={styles.container}>
@@ -18,26 +27,27 @@ const Filter = () => {
 			/>
 			<Picker
 				prompt='Filter by :'
-				selectedValue={filter}
-				onValueChange={(itemValue) =>
-					setFilter(itemValue)
-				}>
-				<Picker.Item label="Latest" value={{
-					"orderBy": "CREATED_AT",
-					"orderDirection": "DESC"
-				}} />
-				<Picker.Item label="Highest Rated" value={{
-					"orderBy": "RATING_AVERAGE",
-					"orderDirection": "DESC"
-				}} />
-				<Picker.Item label="Lowest Rated" value={{
-					"orderBy": "RATING_AVERAGE",
-					"orderDirection": "ASC"
-				}} />
+				selectedValue={filterKey}
+				onValueChange={(itemValue) => {
+					setFilterKey(itemValue);
+					setFilter(filterOptions[itemValue]);
+				}}>
+				<Picker.Item
+					label='Latest'
+					value={'latest'}
+				/>
+				<Picker.Item
+					label='Highest Rated'
+					value={'highest'}
+				/>
+				<Picker.Item
+					label='Lowest Rated'
+					value={'lowest'}
+				/>
 			</Picker>
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,7 +64,7 @@ const styles = StyleSheet.create({
 		verticalAlign: 'middle',
 		paddingLeft: 10,
 		backgroundColor: theme.colors.secondary,
-	}
-})
+	},
+});
 
 export default Filter;

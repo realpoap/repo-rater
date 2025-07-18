@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
 const useRepositories = (filter) => {
@@ -9,7 +9,7 @@ const useRepositories = (filter) => {
 		variables: filter,
 	})
 
-	// console.log('filter is', filter);
+	console.log('filter is', filter);
 
 	useEffect(() => {
 		if (error) {

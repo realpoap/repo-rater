@@ -1,18 +1,18 @@
-
 import { useContext } from 'react';
-import useRepositories from '../hooks/useRepositories';
-import RepositoryListContainer from './Repositories/RepositoryListContainer';
 import { FilterContext } from '../contexts/FilterContext.js';
 import useMeToken from '../hooks/useMeToken.js';
+import useRepositories from '../hooks/useRepositories';
+import RepositoryListContainer from './Repositories/RepositoryListContainer';
 
 const RepositoryList = () => {
-	const { filter, debouncedFilter } = useContext(FilterContext)
+	const { filter, debouncedFilter } = useContext(FilterContext);
 	useMeToken();
 
 	const variables = {
 		...filter,
-		searchKeyword: debouncedFilter
-	}
+		searchKeyword: debouncedFilter,
+	};
+	console.log('variables are', variables);
 
 	const { repositories } = useRepositories(variables);
 

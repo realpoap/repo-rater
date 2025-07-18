@@ -1,8 +1,14 @@
-import { Platform, View, Image, StyleSheet, Linking, Pressable } from 'react-native'
-import Text from '../Text';
+import {
+	Image,
+	Linking,
+	Platform,
+	Pressable,
+	StyleSheet,
+	View,
+} from 'react-native';
 import theme from '../../theme';
+import Text from '../Text';
 import StatBar from './StatBar';
-
 
 const styles = StyleSheet.create({
 	containerRepo: {
@@ -19,7 +25,6 @@ const styles = StyleSheet.create({
 	},
 	containerInfo: {
 		flexDirection: 'row',
-
 	},
 	containerStat: {
 		flexDirection: 'row',
@@ -81,30 +86,39 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		fontWeight: theme.fontWeights.bold,
 		textAlignVertical: 'center',
-	}
-
+	},
 });
 
-
-
 const RepositoryItem = ({ item, toGithub }) => {
-	const { fullName, description, language, stargazersCount, forksCount, reviewCount, ratingAverage, ownerAvatarUrl, url } = item
+	const {
+		fullName,
+		description,
+		language,
+		stargazersCount,
+		forksCount,
+		reviewCount,
+		ratingAverage,
+		ownerAvatarUrl,
+		url,
+	} = item;
 	const handlePress = (e) => {
 		e.preventDefault();
 		//console.log(url);
-		Linking.openURL(url)
-
-	}
+		Linking.openURL(url);
+	};
 
 	return (
-		<View testID="repositoryItem" style={styles.containerRepo}>
+		<View
+			testID='repositoryItem'
+			style={styles.containerRepo}>
 			<View style={styles.containerInfo}>
-				<Image style={styles.avatar}
+				<Image
+					style={styles.avatar}
 					height={50}
 					width={50}
 					resizeMethod='resize'
 					resizeMode='center'
-					src={ownerAvatarUrl}
+					source={{ uri: ownerAvatarUrl }}
 				/>
 				<View style={styles.item}>
 					<Text style={styles.title}>{fullName}</Text>
@@ -112,15 +126,20 @@ const RepositoryItem = ({ item, toGithub }) => {
 					<Text style={styles.chip}>{language}</Text>
 				</View>
 			</View>
-			<StatBar style={styles.containerStat}
+			<StatBar
+				style={styles.containerStat}
 				stars={stargazersCount}
 				forks={forksCount}
 				reviews={reviewCount}
 				rating={ratingAverage}
 			/>
-			{toGithub && <Pressable onPress={handlePress}><Text style={styles.button}>Open in Github</Text></Pressable>}
+			{toGithub && (
+				<Pressable onPress={handlePress}>
+					<Text style={styles.button}>Open in Github</Text>
+				</Pressable>
+			)}
 		</View>
-	)
-}
+	);
+};
 
-export default RepositoryItem
+export default RepositoryItem;
