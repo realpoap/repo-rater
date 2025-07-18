@@ -10,23 +10,13 @@ const RepositoryList = () => {
 	useMeToken();
 
 	const variables = {
-		variables: {
-			...filter,
-			first: 5,
-			searchKeyword: debouncedFilter
-		}
+		...filter,
+		searchKeyword: debouncedFilter
 	}
 
-	const { repositories, fetchMore } = useRepositories(variables);
-	const onEndReach = () => {
-		console.log('You have reached the end of the list');
-		fetchMore();
-	};
+	const { repositories } = useRepositories(variables);
 
-	return <RepositoryListContainer
-		repositories={repositories}
-		onEndReach={onEndReach}
-	/>;
+	return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;

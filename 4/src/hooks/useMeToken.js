@@ -23,25 +23,25 @@ const useMeToken = (include) => {
 			fetchPolicy: "cache-and-network",
 			variables: { includeReviews: Boolean(include) },
 			onCompleted: (data) => {
-				//console.log('USEMETOKEN - me updated !');
+				console.log('USEMETOKEN - me updated !');
 				setMe(data.me)
 			}
 		}],
 		onCompleted: (data) => {
-			//console.log('deleted !');
-			//console.log('result:', data);
+			console.log('deleted !');
+			console.log('result:', data);
 		},
 	})
 
 	useEffect(() => {
 		if (loading) {
-			//console.log('loading user...');
+			console.log('loading user...');
 		}
 		if (error) {
 			throw new Error(error)
 		}
 		if (data) {
-			//console.log('USEFFECT - me updated !');
+			console.log('USEFFECT - me updated !');
 			setMe(data)
 		}
 	}, [data])
